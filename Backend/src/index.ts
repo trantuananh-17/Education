@@ -4,6 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import logRequestTime from "./middleware/winston.middleware";
 import router from "./routes";
+import { connectDB } from "./config/db.config";
 
 dotenv.config();
 
@@ -26,4 +27,5 @@ app.use("/api", router);
 
 app.listen(PORT, () => {
   console.log(`Server đang chạy trên cổng ${PORT}`);
+  connectDB();
 });

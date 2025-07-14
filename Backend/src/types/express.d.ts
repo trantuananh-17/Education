@@ -9,11 +9,15 @@ declare global {
       };
     }
     interface Request {
-      userId?: Types.ObjectId;
+      user?: IUserPayload;
     }
 
     interface Request {
       files: { [key: string]: File | File[] };
     }
   }
+}
+
+export interface RequestCustom extends Request {
+  user?: UserPayload;
 }
