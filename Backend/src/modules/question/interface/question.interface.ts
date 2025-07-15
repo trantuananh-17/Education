@@ -1,5 +1,5 @@
 export interface IQuestionResponse {
-  quizId: {
+  quizzesId: {
     _id: string;
     title: string;
   };

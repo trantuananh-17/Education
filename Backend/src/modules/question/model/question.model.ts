@@ -6,7 +6,7 @@ export enum questionType {
 }
 
 export interface IQuestion extends Document {
-  quizId: mongoose.Schema.Types.ObjectId[];
+  quizzesId: mongoose.Schema.Types.ObjectId[];
   questionType: questionType;
   questionText: string;
   answers: {
@@ -23,14 +23,12 @@ const questionSchema: Schema = new Schema<IQuestion>({
       isCorrect: { type: Boolean, required: true },
     },
   ],
-  quizId: [{ type: mongoose.Schema.Types.ObjectId, ref: "Quiz" }],
-  questionType: [
-    {
-      type: String,
-      enum: Object.values(questionType),
-      require: true,
-    },
-  ],
+  quizzesId: [{ type: mongoose.Schema.Types.ObjectId, ref: "Quiz" }],
+  questionType: {
+    type: String,
+    enum: Object.values(questionType),
+    require: true,
+  },
 });
 
 const QuestionModel = mongoose.model<IQuestion>("Question", questionSchema);
