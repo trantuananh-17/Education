@@ -11,9 +11,9 @@ export const createQuestionService = async (
   question: IQuestion
 ): Promise<APIResponse<IQuestion>> => {
   try {
-    const { quizId, questionText, questionType, answers } = question;
+    const { quizzesId, questionText, questionType, answers } = question;
     const newQuestion = new QuestionModel({
-      quizId,
+      quizzesId,
       questionText,
       questionType,
       answers,
