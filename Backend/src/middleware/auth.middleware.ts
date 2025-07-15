@@ -13,10 +13,8 @@ const authMiddleware = (
   next: NextFunction
 ): any => {
   const token = req.headers["authorization"]?.split(" ")[1];
-  console.log(token);
 
   if (!token) {
-    console.log("hello");
     return res
       .status(HttpStatus.UNAUTHORIZED)
       .json({ message: "Bạn chưa đăng nhập" });
@@ -24,7 +22,6 @@ const authMiddleware = (
 
   try {
     const decoded = jwt.verify(token, process.env.SECRET_KEY!);
-    console.log(decoded);
 
     req.user = decoded as IUserPayload;
     next();
