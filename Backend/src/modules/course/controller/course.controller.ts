@@ -3,7 +3,10 @@ import { apiError } from "../../../utils/apiResponse.utils";
 import HttpStatus from "../../../utils/httpstatus.utils";
 import {
   createCourseService,
+  deleteCourseService,
   getAllCourseService,
+  getCourseByIdService,
+  updateCourseService,
 } from "../service/course.service";
 
 export const createCourseController = async (
@@ -29,6 +32,11 @@ export const updateCourseController = async (
   res: Response
 ): Promise<any> => {
   try {
+    const id = req.params.id;
+
+    const response = await updateCourseService(id, req.body);
+
+    res.status(response.status_code).json(response);
   } catch (error) {
     console.log("Error in updateCourseController: ", error);
     return apiError(
@@ -44,6 +52,11 @@ export const deleteCourseController = async (
   res: Response
 ): Promise<any> => {
   try {
+    const id = req.params.id;
+
+    const response = await deleteCourseService(id);
+
+    res.status(response.status_code).json(response);
   } catch (error) {
     console.log("Error in deleteCourseController: ", error);
     return apiError(
@@ -63,7 +76,7 @@ export const getAllCourseController = async (
     const limit = req.pagination?.limit || 12;
 
     const response = await getAllCourseService(page, limit);
-    return res.status(response.status_code).json(response);
+    res.status(response.status_code).json(response);
   } catch (error) {
     console.log("Error in getAllCourseController: ", error);
     return apiError(
@@ -79,6 +92,11 @@ export const getCourseByIdController = async (
   res: Response
 ): Promise<any> => {
   try {
+    const id = req.params.id;
+
+    const response = await getCourseByIdService(id);
+
+    res.status(response.status_code).json(response);
   } catch (error) {
     console.log("Error in getCourseByIdController: ", error);
     return apiError(

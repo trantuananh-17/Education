@@ -1,9 +1,11 @@
+import mongoose from "mongoose";
 import {
   apiError,
   apiResponse,
   APIResponse,
 } from "../../../utils/apiResponse.utils";
 import HttpStatus from "../../../utils/httpstatus.utils";
+import UserModel from "../../user/model/user.model";
 import CoursesModel, { ICourse } from "../model/course.model";
 
 export const createCourseService = async (
@@ -35,6 +37,11 @@ export const createCourseService = async (
     });
 
     const response = await newCourse.save();
+
+    await UserModel.updateOne(
+      { _id: instructorId },
+      { $push: { courses: response._id } }
+    );
 
     return apiResponse(
       HttpStatus.CREATED,
@@ -95,8 +102,8 @@ export const deleteCourseService = async (id: string) => {
 };
 
 export const getAllCourseService = async (
-  limit: number,
-  page: number
+  page: number,
+  limit: number
 ): Promise<
   APIResponse<{
     data: ICourse[];
@@ -112,7 +119,7 @@ export const getAllCourseService = async (
     const courses = await CoursesModel.find()
       .skip(skip)
       .limit(limit)
-      .populate("instructorId");
+      .populate("instructorId", "_id email fullname");
 
     const totalDocs = await CoursesModel.countDocuments();
 
@@ -136,11 +143,24 @@ export const getAllCourseService = async (
 };
 
 export const getCourseByIdService = async (
-  id: string,
-  limit: number,
-  page: number
-) => {
+  id: string
+): Promise<APIResponse<ICourse>> => {
   try {
+    const courses = await CoursesModel.findById(id)
+      .populate("instructorId", "_id email fullname")
+      // .populate("lessons")
+      // .populate("reviews")
+      .populate("users");
+
+    if (!courses) {
+      return apiError(HttpStatus.NOT_FOUND, "Không tìm thấy khóa học");
+    }
+
+    return apiResponse(
+      HttpStatus.OK,
+      "Lấy danh sách khóa học thành công.",
+      courses
+    );
   } catch (error) {
     console.log("Error in getCourseByIdService: ", error);
     return apiError(

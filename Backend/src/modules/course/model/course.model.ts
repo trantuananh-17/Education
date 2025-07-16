@@ -4,7 +4,7 @@ export interface ICourse extends Document {
   title: string;
   description: string;
   instructorId: mongoose.Schema.Types.ObjectId;
-  lessons: mongoose.Schema.Types.ObjectId[];
+  lessons?: mongoose.Schema.Types.ObjectId[];
   resources?: string[];
   reviews?: mongoose.Schema.Types.ObjectId[];
   quizzes?: mongoose.Schema.Types.ObjectId[];
