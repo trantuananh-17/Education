@@ -21,5 +21,5 @@ const lessonSchema: Schema = new Schema<ILesson>(
   { timestamps: true }
 );
 
-const LessonModel = mongoose.model("Lesson", lessonSchema);
+const LessonModel = mongoose.model<ILesson>("Lesson", lessonSchema);
 export default LessonModel;
